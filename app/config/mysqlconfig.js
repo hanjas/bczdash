@@ -5,7 +5,7 @@ var connectionconfig = {
     'connectionLimit' : 20,
     'host': 'localhost',
     'user': 'root',
-    'password': '%DOM%elements123',
+    'password': 'toor',
     'database': 'bczdash',
     'debug':false
     //'multipleStatements': true

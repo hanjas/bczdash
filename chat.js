@@ -1,12 +1,18 @@
+/**
+ * Created by roshan on 28/5/17.
+ */
 var compression = require('compression');
 var express     = require('express');
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
-var jwt         = require('jsonwebtoken');
 var http        = require('http');
-
 var appconfig = require('./app/config/appconfig.js');
+
 var app = express();
+
+var apiport = 3100;
+var server = http.Server(app);
+var io          = require('socket.io')(server);
 
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,14 +24,20 @@ app.use(function(req, res, next) {
     next();
 });
 
-require('./app/testing/testRoutes.js')(app, console);
-require('./app/login/loginRoutes.js')(app, console);
-require('./app/assets/assetRoutes.js')(app, console);
-require('./app/user/userRoutes.js')(app, console);
+io.on('connection',function (socket) {
+    socket.on('chatMessage',function (from, msg) {
+        io.emit('chatMessage',from,msg);
+    });
+    socket.on('notifyUser',function (user) {
+        io.emit('notifyUser',user);
+    });
+});
+
+app.get('/', function(req, res){
+    res.send('what???', 404);
+});
 
 
-var server = http.Server(app);
-
-server.listen(appconfig.apiport, function(){
-    console.log('Platform REST API server listening at :' + appconfig.apiport);
+server.listen(apiport, function(){
+    console.log('Platform REST API server listening at :' + apiport);
 });
