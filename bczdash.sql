@@ -29,11 +29,11 @@ CREATE TABLE `assettype` (
 
 DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `permid` int(11) NOT NULL AUTO_INCREMENT,
   `w` tinyint(1) DEFAULT NULL,
   `r` tinyint(1) DEFAULT NULL,
   `assetpath` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`permid`)
 );
 
 

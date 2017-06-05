@@ -6,7 +6,7 @@ module.exports = function(app, console){
     var utils = require('../common/utils.js');
     var user = require('./user.js');
 
-    app.post('/api/user/createuser', user.checkcreateuserargs, user.verifyassettype ,function(req, res){
+    app.post('/api/user/createuser', user.checkcreateuserargs, user.checkusername, user.verifyassettype ,function(req, res){
         user.createUser(req, utils.generalCallback(res));
     });
 
