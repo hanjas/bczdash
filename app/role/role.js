@@ -16,7 +16,7 @@ exports.verifycreateroleapiargs = function (req, res, next) {
 exports.verifyassignroleapiargs = function(req, res, next) {
     var isallkeys = utils.checkallkeys(req.body, ['userpath', 'rolepath']);
     if (!isallkeys[0])
-        utils.failReply(req.body, "key not fount" + isallkeys[1], res);
+        utils.failReply(req.body, "key not fount " + isallkeys[1], res);
     else
         next()
 };
@@ -24,7 +24,7 @@ exports.verifyassignroleapiargs = function(req, res, next) {
 exports.verifyassignpermapiargs = function(req, res, next) {
     var isallkeys = utils.checkallkeys(req.body, ['rolepath', 'permid']);
     if (!isallkeys[0])
-        utils.failReply(req.body, "key not fount" + isallkeys[1], res);
+        utils.failReply(req.body, "key not fount " + isallkeys[1], res);
     else
         next()
 };

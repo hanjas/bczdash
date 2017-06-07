@@ -28,6 +28,14 @@ exports.checkcreateassetargs = function (req, res, next) {
         next()
 };
 
+exports.checkgetmyassetargs = function (req, res, next) {
+    var isallkeys = utils.checkallkeys(req.body, ['assettype']);
+    if (!isallkeys[0])
+        utils.failReply(req.body, "key no found " + isallkeys[1], res);
+    else
+        next()
+};
+
 exports.createAssetType = function(req, res) {
     var querystr = "insert into bczdash.assettype (type) values (?)";
     mysql.getmysqlconnandrun(function (err, data, msg) {
@@ -79,4 +87,30 @@ exports.createAsset = function(req, callback) {
     mysql.getmysqlconnandruntran(function(err, data, msg){
         return callback(err, data, msg);
     }, createAssetQueries(req));
+};
+
+exports.getMyAssets = function(req, res) {
+    var querystr = "select assets.name, assets.assetpath, assettype.type from assets, permission, role_perm, user_role, assettype" +
+        " where user_role.userpath = ? and assettype.type = ? and role_perm.rolepath = user_role.rolepath and permission.permid = role_perm.permid and" +
+        " assets.assetpath = permission.assetpath and (permission.w = 1 or permission.r = 1);";
+    mysql.getmysqlconnandrun(function (err, data, msg) {
+        if (!err) {
+            utils.succReply(data, "success", res);
+        }
+        else {
+            utils.failReply(err, "no assets", res);
+        }
+    }, mysql.queryReturn(querystr, [req.tokend.userinfo.assetpath, req.body.assettype]));
+};
+
+exports.getAssettypes = function(req, res) {
+    var querystr = "select type from bczdash.assettype";
+    mysql.getmysqlconnandrun(function (err, data, msg) {
+        if (!err) {
+            utils.succReply(data, "success", res);
+        }
+        else {
+            utils.failReply(err, "empty assettype", res);
+        }
+    }, mysql.queryReturn(querystr, []));
 };

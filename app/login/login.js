@@ -25,7 +25,7 @@ var getUser = function(userjson, callback){
 		    var usermeta = userres[i];
 		    console.log(usermeta);
 		    if ("password" in usermeta && validPassword(userjson.password, usermeta.password)){
-            return callback(null, {"userid":userres[i].assetid, "type":userjson.type, "email":userjson.email, "userpath":userres[i].assetpath}, "User validated");
+            return callback(null, {"userid":userres[i].assetid, "type":userjson.type, "email":userjson.email, "assetpath":userres[i].assetpath}, "User validated");
 		    }else{
             return callback({"msg":"Password not valid"}, null, "Invalid Password");
 		    }

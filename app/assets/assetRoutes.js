@@ -11,12 +11,16 @@ module.exports = function(app, console){
         asset.createAssetType(req, res);
     });
 
-    app.post('/api/assets/createasset', asset.checkcreateassetargs, user.verifyassettype ,function(req, res){
+    app.post('/api/assets/createasset', login.verifyToken, asset.checkcreateassetargs, user.verifyassettype ,function(req, res){
         asset.createAsset(req, utils.generalCallback(res));
     });
 
-    // app.post('/api/assets/createasset', user.verifyassettype,  function(req, res){
-    //     asset.createAsset(req, res);
-    // });
+    app.post('/api/assets/getmyassets', login.verifyToken, asset.checkgetmyassetargs, function(req, res){
+        asset.getMyAssets(req, res);
+    });
+
+    app.post('/api/assets/getassettypes', login.verifyToken, function(req, res) {
+        asset.getAssettypes(req, res);
+    })
 
 };
