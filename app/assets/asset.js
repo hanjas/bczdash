@@ -104,10 +104,14 @@ exports.getMyAssets = function(req, res) {
 };
 
 exports.getAssettypes = function(req, res) {
-    var querystr = "select type from bczdash.assettype";
+    var querystr = "select * from bczdash.assettype";
     mysql.getmysqlconnandrun(function (err, data, msg) {
         if (!err) {
-            utils.succReply(data, "success", res);
+            var assettype = {};
+            for (var idx in data) {
+                assettype[data[idx].id] = data[idx].type;
+            }
+            utils.succReply(assettype, "success", res);
         }
         else {
             utils.failReply(err, "empty assettype", res);
