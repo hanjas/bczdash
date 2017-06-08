@@ -10,4 +10,8 @@ module.exports = function(app, console){
         user.createUser(req, utils.generalCallback(res));
     });
 
+    app.post('/api/user/assignrole', login.verifyToken, role.verifyassignroleapiargs, role.verifyuserpath, role.verifyrolepath, role.verifyuserrole,function (req, res) {
+        role.assignRole(req, res);
+    });
+
 };

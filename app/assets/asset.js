@@ -68,9 +68,9 @@ var createassetinfo = function(queryid, parentQueryid, req) {
             return [req.body.assetpath, req.body.meta]
         }, mysql.transError("create userinfo failed"),function(results, resultq) {
             if (resultq && resultq.affectedRows > 0) {
-                return [false, resultq, "userinfo created successfully"];
+                return [false, resultq, "assetinfo created successfully"];
             } else
-                mysql.transErrorR(resultq, "create userinfo failed");
+                mysql.transErrorR(resultq, "assetinfo failed");
         }
     ]
 };

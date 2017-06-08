@@ -26,7 +26,7 @@ var verifyassettype = function(req, res, next) {
     var querystr = "select * from bczdash.assettype where type = ?";
     mysql.getmysqlconnandrun(function (err, data, msg) {
         if (!err) {
-            if (data[0].id){
+            if (data && data[0].id){
                 req.body.assettypeid = data[0].id;
                 next()
             } else {
