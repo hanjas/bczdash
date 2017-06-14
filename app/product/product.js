@@ -71,11 +71,11 @@ exports.createproduct = function(req, callback) {
 
 exports.getMyProducts = function(req, res) {
     var querystr = "select assets.name, assets.assetpath, assettype.type, productinfo.productcost, productinfo.discount," +
-        " productinfo.meta from assets, productinfo, permission, role_perm, user_role, assettype" +
-        " where user_role.userpath = ? and assettype.type = 'com.blueciphers.assets.product' and" +
-        " assets.assettype = assettype.id and role_perm.rolepath = user_role.rolepath and" +
-        " permission.permid = role_perm.permid and assets.assetpath = permission.assetpath and" +
-        " productinfo.assetpath = assets.assetpath and (permission.w = 1 or permission.r = 1)";
+        " productinfo.meta from assets, assettype, productinfo, user_role, role_perm, permission where" +
+        " user_role.userpath=? and role_perm.rolepath=user_role.rolepath and permission.permid=role_perm.permid and" +
+        " (permission.w=1 or permission.r=1) and assets.assetpath=permission.assetpath and" +
+        " assettype.type='com.blueciphers.assets.product' and assets.assettype=assettype.id and" +
+        " productinfo.assetpath=assets.assetpath";
     mysql.getmysqlconnandrun(function (err, data, msg) {
         if (!err) {
             utils.succReply(data, "success", res);
