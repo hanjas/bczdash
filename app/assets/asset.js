@@ -91,7 +91,7 @@ exports.createAsset = function(req, callback) {
 
 exports.getMyAssets = function(req, res) {
     var querystr = "select assets.name, assets.assetpath, assettype.type from assets, permission, role_perm, user_role, assettype" +
-        " where user_role.userpath = ? and assettype.type = ? and role_perm.rolepath = user_role.rolepath and permission.permid = role_perm.permid and" +
+        " where user_role.userpath = ? and assettype.type = ? and asset.assettype = assettype.id and role_perm.rolepath = user_role.rolepath and permission.permid = role_perm.permid and" +
         " assets.assetpath = permission.assetpath and (permission.w = 1 or permission.r = 1);";
     mysql.getmysqlconnandrun(function (err, data, msg) {
         if (!err) {

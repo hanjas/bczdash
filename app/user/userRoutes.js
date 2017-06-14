@@ -7,7 +7,7 @@ module.exports = function(app, console){
     var user = require('./user.js');
     var role = require('../role/role.js');
 
-    app.post('/api/user/createuser', user.checkcreateuserargs, user.checkusername, user.verifyassettype ,function(req, res){
+    app.post('/api/user/createuser', login.verifyToken, user.checkcreateuserargs, user.checkusername, user.verifyassettype ,function(req, res){
         user.createUser(req, utils.generalCallback(res));
     });
 
