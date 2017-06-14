@@ -11,4 +11,8 @@ module.exports = function(app, console){
         user.verifypgrouppath, function(req, res){
         product.createproduct(req, utils.generalCallback(res));
     });
+
+    app.post('/api/product/getmyproducts', login.verifyToken, function(req, res){
+        product.getMyProducts(req, res);
+    });
 };

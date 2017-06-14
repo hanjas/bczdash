@@ -68,3 +68,20 @@ exports.createproduct = function(req, callback) {
         return callback(err, data, msg);
     }, createproductQueries(req));
 };
+
+exports.getMyProducts = function(req, res) {
+    var querystr = "select assets.name, assets.assetpath, assettype.type, productinfo.productcost, productinfo.discount," +
+        " productinfo.meta from assets, productinfo, permission, role_perm, user_role, assettype" +
+        " where user_role.userpath = ? and assettype.type = 'com.blueciphers.assets.product' and" +
+        " assets.assettype = assettype.id and role_perm.rolepath = user_role.rolepath and" +
+        " permission.permid = role_perm.permid and assets.assetpath = permission.assetpath and" +
+        " productinfo.assetpath = assets.assetpath and (permission.w = 1 or permission.r = 1)";
+    mysql.getmysqlconnandrun(function (err, data, msg) {
+        if (!err) {
+            utils.succReply(data, "success", res);
+        }
+        else {
+            utils.failReply(err, "no products", res);
+        }
+    }, mysql.queryReturn(querystr, [req.tokend.userinfo.assetpath, req.body.assettype]));
+};
