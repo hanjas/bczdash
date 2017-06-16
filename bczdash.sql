@@ -15,10 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP DATABASE IF EXISTS bczdash;
-CREATE DATABASE bczdash;
-USE bczdash;
-
 --
 -- Table structure for table `assetinfo`
 --
@@ -39,7 +35,7 @@ CREATE TABLE `assetinfo` (
 
 LOCK TABLES `assetinfo` WRITE;
 /*!40000 ALTER TABLE `assetinfo` DISABLE KEYS */;
-INSERT INTO `assetinfo` VALUES ('/2/1','{}'),('/2/1/2/2','{}'),('/2/1/2/2/3/3','{}'),('/2/1/2/2/4/4','{}'),('/2/1/3/6','{}');
+INSERT INTO `assetinfo` VALUES ('/2/1','{}'),('/2/1/2/2','{}'),('/2/1/2/2/3/3','{}'),('/2/1/3/6','{}');
 /*!40000 ALTER TABLE `assetinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,7 +52,7 @@ CREATE TABLE `assets` (
   `assettype` varchar(300) DEFAULT NULL,
   `assetpath` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`assetid`,`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +61,7 @@ CREATE TABLE `assets` (
 
 LOCK TABLES `assets` WRITE;
 /*!40000 ALTER TABLE `assets` DISABLE KEYS */;
-INSERT INTO `assets` VALUES (1,'Blueciphers','2','/2/1'),(2,'Thirdeye','2','/2/1/2/2'),(3,'thirdeyeadmin','3','/2/1/2/2/3/3'),(4,'starcool','4','/2/1/2/2/4/4'),(5,'roshan@blueciphers.com','1','/2/1/1/5'),(6,'blueadmin','3','/2/1/3/6');
+INSERT INTO `assets` VALUES (1,'Blueciphers','2','/2/1'),(2,'Thirdeye','2','/2/1/2/2'),(3,'thirdeyeadmin','3','/2/1/2/2/3/3'),(5,'roshan@blueciphers.com','1','/2/1/1/5'),(6,'blueadmin','3','/2/1/3/6'),(8,'doctorspot','4','/2/1/4/8'),(9,'thirdeye@blueciphers.com','1','/2/1/2/2/1/9'),(10,'starcool','4','/2/1/2/2/4/10');
 /*!40000 ALTER TABLE `assets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +75,8 @@ DROP TABLE IF EXISTS `assettype`;
 CREATE TABLE `assettype` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(300) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `type` (`type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -89,32 +86,8 @@ CREATE TABLE `assettype` (
 
 LOCK TABLES `assettype` WRITE;
 /*!40000 ALTER TABLE `assettype` DISABLE KEYS */;
-INSERT INTO `assettype` VALUES (1,'com.blueciphers.assets.user.localuser'),(2,'com.blueciphers.assets.group'),(3,'com.blueciphers.assets.role'),(4,'com.blueciphers.assets.product'),(5,'com.blueciphers.assets.payment'),(6,'com.blueciphers.assets.page');
+INSERT INTO `assettype` VALUES (2,'com.blueciphers.assets.group'),(6,'com.blueciphers.assets.page'),(5,'com.blueciphers.assets.payment'),(4,'com.blueciphers.assets.product'),(3,'com.blueciphers.assets.role'),(1,'com.blueciphers.assets.user.localuser');
 /*!40000 ALTER TABLE `assettype` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `payment_transaction`
---
-
-DROP TABLE IF EXISTS `payment_transaction`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `payment_transaction` (
-  `assetpath` varchar(500) DEFAULT NULL,
-  `amount` double DEFAULT NULL,
-  `timestamp` int(11) DEFAULT NULL,
-  `meta` varchar(500) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `payment_transaction`
---
-
-LOCK TABLES `payment_transaction` WRITE;
-/*!40000 ALTER TABLE `payment_transaction` DISABLE KEYS */;
-/*!40000 ALTER TABLE `payment_transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -129,8 +102,9 @@ CREATE TABLE `permission` (
   `w` tinyint(1) DEFAULT NULL,
   `r` tinyint(1) DEFAULT NULL,
   `assetpath` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`permid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`permid`),
+  UNIQUE KEY `w` (`w`,`r`,`assetpath`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +113,7 @@ CREATE TABLE `permission` (
 
 LOCK TABLES `permission` WRITE;
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` VALUES (1,1,1,'/2/1/2/2/4/4');
+INSERT INTO `permission` VALUES (5,1,1,'/2/1/2/2/4/10'),(2,1,1,'/2/1/4/8');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,6 +139,7 @@ CREATE TABLE `productinfo` (
 
 LOCK TABLES `productinfo` WRITE;
 /*!40000 ALTER TABLE `productinfo` DISABLE KEYS */;
+INSERT INTO `productinfo` VALUES ('/2/1/2/2/4/10',13500,0,'{}'),('/2/1/4/8',12000,0,'{}');
 /*!40000 ALTER TABLE `productinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,8 +163,35 @@ CREATE TABLE `role_perm` (
 
 LOCK TABLES `role_perm` WRITE;
 /*!40000 ALTER TABLE `role_perm` DISABLE KEYS */;
-INSERT INTO `role_perm` VALUES ('/2/1/3/6',1);
+INSERT INTO `role_perm` VALUES ('/2/1/2/2/3/3',1),('/2/1/2/2/3/3',5),('/2/1/3/6',1),('/2/1/3/6',2);
 /*!40000 ALTER TABLE `role_perm` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `transaction`
+--
+
+DROP TABLE IF EXISTS `transaction`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `transaction` (
+  `assetpath` varchar(500) NOT NULL,
+  `userpath` varchar(500) NOT NULL,
+  `amount` double DEFAULT NULL,
+  `timestamp` int(11) DEFAULT NULL,
+  `meta` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`assetpath`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transaction`
+--
+
+LOCK TABLES `transaction` WRITE;
+/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
+INSERT INTO `transaction` VALUES ('/2/1/2/2/4/10','/2/1/2/2/1/9',4000,1234556767,'{}');
+/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -212,7 +214,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES ('/2/1/1/5','/2/1/3/6');
+INSERT INTO `user_role` VALUES ('/2/1/1/5','/2/1/3/6'),('/2/1/2/2/1/9','/2/1/2/2/3/3');
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,7 +231,7 @@ CREATE TABLE `userinfo` (
   `password` varchar(500) DEFAULT NULL,
   `meta` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +240,7 @@ CREATE TABLE `userinfo` (
 
 LOCK TABLES `userinfo` WRITE;
 /*!40000 ALTER TABLE `userinfo` DISABLE KEYS */;
-INSERT INTO `userinfo` VALUES (1,'/2/1/1/5','$2a$08$0Lc8p1GmdcpdR/WoA6/oL.zvlMmZ3oGPrtOIWz/5kku/5HPNaKsUK','{}');
+INSERT INTO `userinfo` VALUES (1,'/2/1/1/5','$2a$08$0Lc8p1GmdcpdR/WoA6/oL.zvlMmZ3oGPrtOIWz/5kku/5HPNaKsUK','{}'),(2,'/2/1/2/2/1/9','$2a$08$kDoFj7fwzImN5TuNBGrmQef4/AePkufDmFvE1sdjPN7g2Y4uIEmZ.','{}');
 /*!40000 ALTER TABLE `userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -251,4 +253,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-13 18:08:50
+-- Dump completed on 2017-06-17  0:08:46

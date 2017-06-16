@@ -57,6 +57,23 @@ exports.verifypgrouppath = function(req, res, next) {
 
 };
 
+exports.verifyassetpath = function(req, res, next) {
+    var querystr = "select * from bczdash.assets where assetpath = ?";
+    mysql.getmysqlconnandrun(function (err, data, msg) {
+        if (!err) {
+            if (data && data[0] && data[0].assetid){
+                next()
+            } else {
+                utils.failReply(err, "assettype not exist", res);
+            }
+        }
+        else {
+            utils.failReply(err, msg, res);
+        }
+    }, mysql.queryReturn(querystr, [req.body.assetpath]));
+
+};
+
 exports.checkusername = function(req, res, next) {
     var querystr = "select * from bczdash.assets where name = ?";
     mysql.getmysqlconnandrun(function (err, data, msg) {

@@ -25,6 +25,7 @@ require('./app/user/userRoutes.js')(app, console);
 require('./app/permission/permissionRoutes.js')(app, console);
 require('./app/role/roleRoutes.js')(app, console);
 require('./app/product/productRoutes.js')(app, console);
+require('./app/payment/paymentRoutes.js')(app, console);
 
 
 var server = http.Server(app);
