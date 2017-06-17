@@ -34,7 +34,7 @@ exports.addpayment = function(req, res) {
 };
 
 exports.getpayment = function(req, res) {
-    var querystr = "select ";
+    var querystr = "select * from bczdash.transaction where assetpath=?";
     mysql.getmysqlconnandrun(function (err, data, msg) {
         if (!err) {
             utils.succReply(data, "success", res);
@@ -42,5 +42,20 @@ exports.getpayment = function(req, res) {
         else {
             utils.failReply(err, "no products", res);
         }
-    }, mysql.queryReturn(querystr, [req.body.assetpath, req.body.userpath, req.body.amount, req.body.timestamp, req.body.meta]));
+    }, mysql.queryReturn(querystr, [req.body.assetpath, req.body.userpath]));
 };
+
+exports.getallpayments = function(req, res) {
+    var querystr = "select trans.* from assets, user_role, role_perm, permission, assettype, transaction trans where user_role.userpath=? and role_perm.rolepath=user_role.rolepath and permission.permid=role_perm.permid and (permission.w=1 or permission.r=1) and assets.assetpath=permission.assetpath and assettype.type='com.blueciphers.assets.product' and assets.assettype=assettype.id and trans.assetpath=assets.assetpath;";
+    mysql.getmysqlconnandrun(function (err, data, msg) {
+        if (!err) {
+            if (data && data.length > 0)
+                utils.succReply(data, "success", res);
+            else
+                utils.succReply(data, "no payments", res);
+        }
+        else {
+            utils.failReply(err, "no payments", res);
+        }
+    }, mysql.queryReturn(querystr, [req.tokend.userinfo.assetpath]));
+}

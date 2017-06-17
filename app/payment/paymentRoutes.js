@@ -14,4 +14,8 @@ module.exports = function(app, console){
     app.post('/api/payment/get', login.verifyToken, payment.verifygetpaymentapiargs, function(req, res){
         payment.getpayment(req, res);
     });
+
+    app.post('/api/payment/getall', login.verifyToken, function(req, res){
+        payment.getallpayments(req, res);
+    });
 };
